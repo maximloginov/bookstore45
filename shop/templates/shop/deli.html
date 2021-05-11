@@ -1,0 +1,40 @@
+{% load static %}
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>{% block title %}Книжный магазин "Книжная полка"{% endblock %}</title>
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
+</head>
+<body>
+<div id="header" align="center">
+    <img src="media\products\2021\05\03\7.png" height="100" width="120" align="center">
+    <a href="/" class="logo">Главная</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    <a class="logo" href="">Доставка и оплата</a> &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    <a class="logo" href="">О нас</a>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+    <a class="logo" class="cart" style="color:white">
+        <!--       id="subheader"-->
+        {% with total_items=cart|length %}
+        {% if cart|length > 0 %}
+        В корзине:
+        <a href="{% url 'cart:cart_detail' %}">
+            {{ total_items }} item{{ total_items|pluralize }},
+            ${{ cart.get_total_price }}
+        </a>
+        {% else %}
+        Корзина&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+        {% endif %}
+        {% endwith %}
+    </a>
+</div>
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+<table>
+    <tr class="footer">
+        <td> Адрес: Барнаул, ул. Ленина, 76</td>
+        <td> Тел.: 8-800-555-35-35</td>
+    </tr>
+</table>
+</body>
+</html>

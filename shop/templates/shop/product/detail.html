@@ -1,0 +1,48 @@
+{% extends "shop/base.html" %}
+{% load static %}
+
+{% block title %}
+{{ product.name }}
+{% endblock %}
+
+{% block content %}
+<div class="product-detail" >
+    <p><img src="{% if product.image %}{{ product.image.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}" style="height:400px;width: 240px;">
+    <p>
+    <h1>{{ product.name }}</h1>
+    <p>
+    <h2><a href="{{ product.category.get_absolute_url }}">{{ product.category }}</a></h2>
+    <p class="price">Руб&nbsp&nbsp{{ product.price }}</p>
+    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+        {{ cart_product_form }}
+        {% csrf_token %}
+        <input type="submit" value="Добавить в корзину">
+    </form>
+    {{ product.description|linebreaks }}
+    {% with comments.count as total_comments %}
+    <h2>{{ total_comments }} Комментарии{{ total_comments|pluralize }}</h2>
+    {% endwith %}
+<!--    {{comment_form}}-->
+    {% for comment in comments %}
+    <div class="comment">
+        <p class="info">
+            Comment {{ forloop.counter }} by {{ comment.name }}
+            {{ comment.created }}
+        </p>
+        {{ comment.body|linebreaks }}
+    </div>
+    {% empty %}
+    <p>Здесь пока нет комментариев</p>
+    {% endfor %}
+    {% if new_comment %}
+    <h2>Ваш комментарий был добавлен</h2>
+    {% else %}
+
+    <form action="." method="post">
+        {{ comment_form.as_p }}
+        {% csrf_token %}
+        <p><input type="submit" style="padding: 10px 30px;"value="Добавить коментарий"></p>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}
